@@ -1,6 +1,6 @@
 # NSD
 > Netlify Short Domain
-<img src="docs/fish.svg" width="130" alt="Postman Icon" align="right">
+<img src="docs/fish.svg" align="right">
 
 A short-url generator written in Go and to be used with Netlify's [Redirect & Rewrite Rules](https://www.netlify.com/docs/redirects/).
 
