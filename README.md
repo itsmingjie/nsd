@@ -4,7 +4,7 @@
 
 A short-url generator written in Go and to be used with Netlify's [Redirect & Rewrite Rules](https://www.netlify.com/docs/redirects/). WIP.
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/itsmingjie/nsd)
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/itsmingjie/nsd)<a href="https://codeclimate.com/github/itsmingjie/nsd/maintainability">
 
 ## User Guide
 ### Installation
@@ -55,3 +55,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+#### Meta
+
+<img src="https://api.codeclimate.com/v1/badges/0da119b24f797695a9a2/maintainability" /></a>
