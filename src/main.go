@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -13,7 +14,7 @@ import (
 )
 
 // flags
-var opPtr = flag.String("op", "", "Operation (add, remove)")
+var isRemove = flag.Bool("remove", false, "Perform remove operation")
 var linkPtr = flag.String("link", "", "Custom URL")
 var urlPtr = flag.String("url", "", "Redirection target")
 var statusPtr = flag.Int("status", 301, "HTTP status code")
@@ -28,15 +29,49 @@ var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func main() {
 	flag.Parse()
-
-	if *opPtr == "" {
-		fmt.Println("Missing required flag: op")
-		os.Exit(-1)
-	}
-
 	redirMap := loadAll()
+	if *isRemove {
+		if *linkPtr != "" {
 
-	if *opPtr == "add" {
+			// if -url flag is present, check if url matches
+			if redirMap[*linkPtr] == nil ||
+				(*urlPtr != "" &&
+					redirMap[*linkPtr] != nil &&
+					redirMap[*linkPtr][0] != *urlPtr) {
+
+				fmt.Println("No action performed: No matching entry")
+				os.Exit(-1)
+
+			}
+
+			url := redirMap[*linkPtr][0]
+			delete(redirMap, *linkPtr)
+			replaceAll(redirMap)
+
+			fmt.Printf("Removed %s >> %s", *linkPtr, url)
+
+		} else if *urlPtr != "" {
+
+			for k, v := range redirMap {
+				if v[0] == *urlPtr {
+					delete(redirMap, k)
+					replaceAll(redirMap)
+
+					fmt.Printf("Removed %s >> %s", k, v[0])
+					os.Exit(0)
+				}
+			}
+
+			fmt.Println("No action performed: No matching entry")
+			os.Exit(0)
+
+		} else {
+
+			fmt.Println("Missing required flag: url or link")
+			os.Exit(-1)
+
+		}
+	} else {
 		var link string
 
 		if *urlPtr == "" {
@@ -55,6 +90,11 @@ func main() {
 			}
 		} else {
 			link = *linkPtr
+
+			if redirMap[link] != nil {
+				fmt.Println("No action performed: Duplicate link entry")
+				os.Exit(0)
+			}
 		}
 
 		add(link, *urlPtr, *statusPtr)
@@ -68,7 +108,6 @@ func check(e error) {
 }
 
 func loadAll() map[string]target {
-
 	f, err := os.Open(configName)
 	var m map[string]target
 	m = make(map[string]target)
@@ -81,10 +120,21 @@ func loadAll() map[string]target {
 	s := bufio.NewScanner(f)
 	for s.Scan() {
 		c := strings.Fields(s.Text())
-		m[c[0]] = newTarget(c[1], c[2])
+		m[c[0][1:]] = newTarget(c[1], c[2])
 	}
 
 	return m
+}
+
+func replaceAll(m map[string]target) error {
+
+	var s string
+
+	for k, v := range m {
+		s += fmt.Sprintf("/%s\t\t%s\t\t%s\r\n", k, v[0], v[1])
+	}
+
+	return ioutil.WriteFile(configName, []byte(s), 0600)
 }
 
 func add(link string, url string, status int) {
@@ -99,6 +149,8 @@ func add(link string, url string, status int) {
 
 	if _, err = f.WriteString(appendLine); err != nil {
 		panic(err)
+	} else {
+		fmt.Printf("Added %s >> %s", link, url)
 	}
 }
 

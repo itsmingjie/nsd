@@ -6,13 +6,29 @@ A short-url generator written in Go and to be used with Netlify's [Redirect & Re
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/itsmingjie/nsd)
 
+## User Guide
 ### Installation
-    $ go get github.com/itsmingjie/nsd
+    go get github.com/itsmingjie/nsd
 
 ### Usage
-```
-$ ./nsd -op=add -link="custom" -url="https://example.com" -status=301
-```
+    # create a new short url at "/foo" that redirects to the argument url
+    ./nsd -link=foo -url=https://example.com
+
+    # create a new short url at a random 6-character path (e.g.: "/sdopd")
+    ./nsd -url=https://example.com
+
+    # create a new short url but rewrites the original url
+    ./nsd -url=https://example.com -status=200
+
+    # remove the short url of "/foo"
+    ./nsd -remove -link=foo
+
+    # remove the short url of "/foo" only if the url of the url of "/foo" matches the argument url
+    ./nsd -remove -link=foo -url=https://example.com
+
+    # remove the short url with target of the argument url
+    # if multiple instances are found, first instance will be removed
+    ./nsd -remove -url=https://example.com
 
 ## License
 
