@@ -19,7 +19,7 @@ var isRemove = flag.Bool("remove", false, "Perform remove operation")
 var linkPtr = flag.String("link", "", "Custom URL")
 var urlPtr = flag.String("url", "", "Redirection target")
 var statusPtr = flag.Int("status", 301, "HTTP status code")
-var configName = "_redirect"
+var configName = "_redirects"
 
 func init() {
 	// randomization seed for default random url
