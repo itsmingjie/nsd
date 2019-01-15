@@ -2,7 +2,7 @@
 > Netlify Short Domain
 <img src="docs/fish.svg" width="130" alt="Postman Icon" align="right">
 
-A short-url generator written in Go and to be used with Netlify's [Redirect & Rewrite Rules](https://www.netlify.com/docs/redirects/). WIP.
+A short-url generator written in Go and to be used with Netlify's [Redirect & Rewrite Rules](https://www.netlify.com/docs/redirects/).
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/itsmingjie/nsd)<a href="https://codeclimate.com/github/itsmingjie/nsd/maintainability">
 
