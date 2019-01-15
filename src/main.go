@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"math/rand"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -29,6 +30,13 @@ var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func main() {
 	flag.Parse()
+
+	// pre-run URL validation top stop wasting resources
+	if *urlPtr != "" && !validateURL(*urlPtr) {
+		fmt.Println("Invalid URL: Please use full URL, including protocols.")
+		os.Exit(-1)
+	}
+
 	redirMap := loadAll()
 	if *isRemove {
 		if *linkPtr != "" {
@@ -160,4 +168,13 @@ func randStringRunes(n int) string {
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
+}
+
+func validateURL(u string) bool {
+	_, err := url.ParseRequestURI(u)
+	if err != nil {
+		return false
+	}
+
+	return true
 }
