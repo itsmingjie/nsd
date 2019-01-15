@@ -80,12 +80,16 @@ func main() {
 
 		}
 	} else {
-		var link string
+		var link, url string
 
 		if *urlPtr == "" {
 			fmt.Println("Missing required flag: url")
 			os.Exit(-1)
 		}
+
+		url = *urlPtr
+		// trim any trailing slashes
+		url = strings.TrimRight(url, "/")
 
 		if *linkPtr == "" {
 			for {
@@ -105,7 +109,7 @@ func main() {
 			}
 		}
 
-		add(link, *urlPtr, *statusPtr)
+		add(link, url, *statusPtr)
 	}
 }
 
