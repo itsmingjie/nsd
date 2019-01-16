@@ -1,1 +1,2 @@
-src/_redirect
+src/_redirects
+.DS_Store
